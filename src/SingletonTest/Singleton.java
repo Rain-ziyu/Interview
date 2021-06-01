@@ -8,5 +8,5 @@ package SingletonTest;
 * */
 public class Singleton {
     public static final Singleton singleton = new Singleton();
-    private Singleton (){}
+    private Singleton (){ }
 }

@@ -36,7 +36,6 @@ public class Singleton2 {
         } catch (IOException e) {
            throw new RuntimeException();
         }
-
     }
     private Singleton2 (String name){
         this.name = name;
