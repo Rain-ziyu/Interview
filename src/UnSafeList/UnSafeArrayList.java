@@ -1,6 +1,7 @@
 package UnSafeList;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /*
@@ -13,6 +14,36 @@ import java.util.concurrent.CopyOnWriteArrayList;
 * 4.优化建议（同样错误不犯第二次）*/
 public class UnSafeArrayList {
     public static void main(String[] args) {
+//        noSafeArrayList();
+//        SetNoSafe();
+//        NoSafeMap();
+    }
+
+    private static void NoSafeMap() {
+        Collections.synchronizedMap(new HashMap<>());
+        new ConcurrentHashMap<>();
+        Map<String,String> map = new HashMap<>();
+
+        for (int i =0;i<=30;i++){
+            new Thread(()->{
+                map.put(UUID.randomUUID().toString().substring(0,8),Thread.currentThread().getName());
+                System.out.println(map);
+            },String.valueOf(i)).start();
+        }
+    }
+
+    private static void SetNoSafe() {
+        //        Collections.synchronizedSet(new HashSet() );
+        Set<String> set =  Collections.synchronizedSet(new HashSet() );//new HashSet();
+        for (int i =0;i<=30;i++){
+            new Thread(()->{
+                set.add(UUID.randomUUID().toString().substring(0,8));
+                System.out.println(set);
+            },String.valueOf(i)).start();
+        }
+    }
+
+    private static void noSafeArrayList() {
         //尽管Vector可以解决该问题但高并发性能会下降
         new CopyOnWriteArrayList<>();
         Collections.synchronizedList(new ArrayList<>());
@@ -23,7 +54,7 @@ public class UnSafeArrayList {
             new Thread(()->{
                 list.add(UUID.randomUUID().toString().substring(0,8));
                 System.out.println(list);
-            },String.valueOf(i).toString()).start();
+            },String.valueOf(i)).start();
         }
     }
 }
